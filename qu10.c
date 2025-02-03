@@ -1,26 +1,51 @@
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-//function
-int prime_checker(int a){
-    for(int i = 2;i<=(a/2);i++){
-        if(a%i==0){
-            return 0;
-        }
+int str_length(char *str) {
+    int len = 0;
+    while (str[len] != '\0') {
+        len++;
     }
-    return 1;
+    return len;
 }
 
-int main(){
-    int n;
-    scanf("%d",&n);
-    printf("The prime factors of %d are:\n",n);
-    for(int j = 2; j<=(n/2);j++){
-        if(n%j==0 && prime_checker(j)){
-            printf("%d ",j);
+void reverse(char *start, char *end) {
+    while (start < end) {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+        start++;
+        end--;
+    }
+}
+
+char* reverse_words(char *str) {
+    int len = str_length(str);
+    char *result = (char*)malloc((len + 1) * sizeof(char));
+    if (!result) return NULL;
+    
+    for (int i = 0; i <= len; i++) {
+        result[i] = str[i];
+    }
+    
+    char *start = result, *end = result;
+    while (*end != '\0' && *end!='\n') {
+        if (*end == ' ') {
+            reverse(start, end - 1);
+            start = end + 1;
         }
+        end++;
     }
-    if(prime_checker(n)){
-        printf("%d",n);
-    }
+
+    reverse(start, end - 1); // reverses the last word
+    
+    return result;
+}
+
+int main() {
+    char str1[1000];
+    fgets(str1,1000,stdin);
+    char *str2 = reverse_words(str1);
+    printf("%s", str2);
     return 0;
 }
